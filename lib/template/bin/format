@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# path to your application root.
+APP_ROOT = File.expand_path('..', __dir__)
+
+def system!(*args)
+  system(*args) || abort("\n\e[31m== Command #{args} failed ==\e[0m")
+end
+
+Dir.chdir(APP_ROOT) do
+  puts "\e[36m\n== Running RuboCop static code formatter ==\e[0m"
+  system!("bundle exec rubocop -a")
+
+  puts "\e[36m\n== Running Prettier style formatter ==\e[0m"
+  system!("pnpm run format")
+end
