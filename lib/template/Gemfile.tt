@@ -2,11 +2,11 @@
 
 source "https://rubygems.org"
 
-ruby "{RUBY_VERSION}"
+ruby "<%= RUBY_VERSION %>"
 
 gem "bootsnap", require: false # Speeds up loading of individual source files
 gem "puma"
-gem "rails", "{RAILS_VERSION}"
+gem "rails", "<%= rails_version_specifier %>"
 gem "slim-rails" # Replaces ERB templates with Slim templates
 gem "webpacker"
 gem "webpacker-pnpm" # Replaces Yarn with pnpm

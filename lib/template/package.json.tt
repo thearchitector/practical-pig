@@ -1,5 +1,5 @@
 {
-  "name": "{APP_NAME}",
+  "name": "<%= app_name %>",
   "version": "0.1.0",
   "dependencies": {
     "@rails/webpacker": "^5.1.1",
@@ -11,8 +11,12 @@
     "terser-webpack-plugin": "^3.0.1"
   },
   "devDependencies": {
-    "prettier": "^2.0.5"
+    "prettier": "^2.0.5",
+    "webpack-dev-server": "^3.11.0"
   },
+  "browserslist": [
+    "defaults"
+  ],
   "scripts": {
     "lint": "prettier --check app/assets/**/*",
     "format": "prettier --check --write app/assets/**/*"
