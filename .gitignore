@@ -1,0 +1,8 @@
+/tmp/
+**/log
+Gemfile.lock
+**/pnpm-lock.yaml
+**/*.gem
+gemfiles/vendor
+.bundle
+/test

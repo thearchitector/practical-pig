@@ -12,8 +12,8 @@ module PracticalPig
   class AppGenerator < Thor
     include Thor::Actions
 
-    APP_NAME_REGEX = /^[a-z].*[a-z0-9]$/i.freeze
-    private_constant :APP_NAME_REGEX
+    NAME_PATTERN = /^[a-z].*[a-z0-9]$/i.freeze
+    private_constant :NAME_PATTERN
 
     attr_accessor :app_root, :app_name
 
@@ -32,11 +32,11 @@ module PracticalPig
       This command makes use of `rails new` under the hood but does not accept
       any generator options.
     HEREDOC
-    option :quiet, :type => :boolean, :aliases => "-q", :desc => "Suppress status output"
+    option :quiet, type: :boolean, aliases: "-q", desc: "Suppress status output"
     def new(app_path)
       # ensure that applications are not requests for help, or that their names follow the
       # appropriate format
-      if Thor::HELP_MAPPINGS.include?(app_path) || flag = !app_path.match?(APP_NAME_REGEX)
+      if Thor::HELP_MAPPINGS.include?(app_path) || (flag = !app_path.match?(NAME_PATTERN))
         if flag
           say <<~MSG.squish
             \e[31mBy design, your application name must start and end with an alphanumeric
@@ -46,7 +46,7 @@ module PracticalPig
         end
 
         help("new")
-        exit(false)
+        return
       end
 
       # generate a Rails application, omitting many things
@@ -75,12 +75,37 @@ module PracticalPig
     private
 
     # https://github.com/rails/rails/blob/master/railties/lib/rails/generators/app_base.rb#L300-L311
-    def rails_version_specifier(gem_version=Rails.gem_version)
+    def rails_version_specifier(gem_version = Rails.gem_version)
       if gem_version.segments.size == 3 || gem_version.release.segments.size == 3
         "~> #{gem_version}"
       else
         patch = gem_version.segments[0, 3].join(".")
         "~> #{patch}\", \">= #{gem_version}"
+      end
+    end
+
+    def print_output
+      # say a nice thing
+      if options[:quiet]
+        say <<~MSG.squish
+          \e[90mYour Practical Pig application (#{app_name}) was generated successfully
+          (and quietly)!\e[0m 🤫
+        MSG
+      else
+        say
+        say
+        say <<~MSG.squish
+          \e[32mHooray! Your Practical Pig application (#{app_name}) was generated
+          successfully!\e[0m 🥳
+        MSG
+        # because PP copies a static package.json and pnpm, it is possible that new
+        # applications will have an outdated version in their dependency list. to
+        # help mitigate that, output a message making users aware of the possibility
+        say <<~MSG
+          \e[90m> Your application's dependencies might be out of date.
+          > To update to the latest version, run `bundle update` and `pnpm up -L`.\e[0m
+        MSG
+        say
       end
     end
 
@@ -108,28 +133,7 @@ module PracticalPig
         end
       end
 
-      # say a nice thing
-      if options[:quiet]
-        say <<~MSG.squish
-          \e[90mYour Practical Pig application (#{app_name}) was generated successfully
-          (and quietly)!\e[0m 🤫
-        MSG
-      else
-        say
-        say
-        say <<~MSG.squish
-          \e[32mHooray! Your Practical Pig application (#{app_name}) was generated
-          successfully!\e[0m 🥳
-        MSG
-        # because PP copies a static package.json and pnpm, it is possible that new
-        # applications will have an outdated version in their dependency list. to
-        # help mitigate that, output a message making users aware of the possibility
-        say <<~MSG
-          \e[90m> Your application's dependencies might be out of date.
-          > To update to the latest version, run `bundle update` and `pnpm up -L`.\e[0m
-        MSG
-        say
-      end
+      print_output
     end
   end
 end

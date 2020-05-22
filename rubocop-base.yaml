@@ -162,6 +162,7 @@ Style/MethodCallWithArgsParentheses:
     - require_relative
     - puts
     - raise
+    - say
   Exclude:
     - "**/Gemfile"
     - "**/*.gemspec"

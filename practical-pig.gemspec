@@ -31,6 +31,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", ">= 5.2"
   spec.add_dependency "thor", "~> 1.0"
 
+  spec.add_development_dependency "rubocop", "~> 0.83.0"
+  spec.add_development_dependency "rubocop-minitest", "~> 0.9"
+  spec.add_development_dependency "rubocop-performance", "~> 1.3"
+  spec.add_development_dependency "rubocop-rails", "~> 2.5"
+
   spec.bindir      = "bin"
   spec.executables = ["pig"]
 
