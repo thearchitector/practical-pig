@@ -16,7 +16,7 @@ inherit_mode:
 
 AllCops:
   Exclude:
-    - "test/test_app/**/*"
+    - "test/**/*"
 
 Metrics/AbcSize:
   IgnoredMethods:

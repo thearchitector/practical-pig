@@ -53,7 +53,7 @@ module PracticalPig
       run(
         <<~CMD.squish
           rails new #{app_path} -GMPCSJB --database=mysql --skip-gemfile --skip-keeps
-          #{"--quiet" if options[:quiet]} --skip-action-mailbox --skip-system-test
+          #{" --quiet" if options[:quiet]} --skip-action-mailbox --skip-system-test
           --skip-action-text --skip-active-storage --skip-turbolinks
         CMD
       )

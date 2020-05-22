@@ -5,7 +5,7 @@ os:
   - osx
 
 cache:
-  bundler: false
+  bundler: true
   npm: true
   directories:
     - "~/.pnpm-store"
@@ -32,7 +32,7 @@ install:
   - pnpm install --frozen-lockfile
 script:
   - bundle exec rubocop
-  - bundle exec ruby ./bin/pig new test/test_app
+  - ruby ./bin/pig new test/test_app
 
 jobs:
   fast_finish: true
