@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 ruby "<%= RUBY_VERSION %>"
 
-gem "bootsnap", require: false # Speeds up loading of individual source files
+gem "bootsnap" # Speeds up loading of individual source files
 gem "puma"
 gem "rails", "<%= rails_version_specifier %>"
 gem "slim-rails" # Replaces ERB templates with Slim templates
@@ -23,10 +23,10 @@ end
 
 group :development, :test do
   gem "dotenv-rails" # Allows loading ENV values from .env files
-  gem "rubocop", "~> 0.83.0", require: false # Enables code analysis and linting
-  gem "rubocop-minitest", require: false
-  gem "rubocop-performance", require: false
-  gem "rubocop-rails", require: false
+  gem "rubocop", "~> 0.83.0" # Enables code analysis and linting
+  gem "rubocop-minitest"
+  gem "rubocop-performance"
+  gem "rubocop-rails"
   gem "spring" # Loads a pre-booted Rails process
 end
 
