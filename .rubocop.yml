@@ -14,10 +14,6 @@ inherit_mode:
     - IgnoredMethods
     - AllowedMethods
 
-AllCops:
-  Exclude:
-    - "test/**/*"
-
 Metrics/AbcSize:
   IgnoredMethods:
     - new

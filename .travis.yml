@@ -33,7 +33,6 @@ install:
 script:
   - bundle exec rubocop
   - bundle exec ruby ./bin/pig new test/test_app
-  - cd test/test_app && bundle exec ruby ./bin/test
 
 jobs:
   fast_finish: true
