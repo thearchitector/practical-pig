@@ -5,7 +5,7 @@ os:
   - osx
 
 cache:
-  bundler: true
+  bundler: false
   npm: true
   directories:
     - "~/.pnpm-store"
