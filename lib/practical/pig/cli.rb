@@ -98,7 +98,7 @@ module PracticalPig
 
           # install Webpacker's binstubs
           run("#{cmd} exec rake webpacker:binstubs", capture: options[:quiet])
-          remove_file("bin/webpack-dev-server") if !options[:with_hmr]
+          remove_file("bin/webpack-dev-server") unless options[:with_hmr]
         end
       end
 
