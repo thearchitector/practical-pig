@@ -123,8 +123,9 @@ module PracticalPig
         # applications will have an outdated version in their dependency list. to
         # help mitigate that, output a message making users aware of the possibility
         say <<~MSG
-          \e[90m> Your application's dependencies might be out of date.
-          > To update to the latest version, run `bundle update` and `pnpm up -L`.\e[0m
+          \e[90m> Your application's dependencies might be out of date.\e[0m
+          \e[90m> To safely update, run `bundle update --conservative` and `pnpm up`.\e[0m
+          \e[90m> To forcefully update, run `bundle update` and `pnpm up -L`.\e[0m
         MSG
         say
       end
