@@ -32,7 +32,7 @@ install:
   - pnpm install --frozen-lockfile
 script:
   - bundle exec rubocop
-  - ruby ./bin/pig new test/test_app
+  - bundle exec ruby ./bin/pig new test/test_app
 
 jobs:
   fast_finish: true

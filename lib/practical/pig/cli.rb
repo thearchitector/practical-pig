@@ -33,6 +33,7 @@ module PracticalPig
       any generator options.
     HEREDOC
     option :quiet, type: :boolean, aliases: "-q", desc: "Suppress status output"
+    option :with_hmr, type: :boolean, desc: "Install Webpack HMR development server"
     def new(app_path)
       # ensure that applications are not requests for help, or that their names follow the
       # appropriate format
@@ -74,14 +75,34 @@ module PracticalPig
 
     private
 
-    # https://github.com/rails/rails/blob/master/railties/lib/rails/generators/app_base.rb#L300-L311
-    def rails_version_specifier(gem_version = Rails.gem_version)
-      if gem_version.segments.size == 3 || gem_version.release.segments.size == 3
-        "~> #{gem_version}"
-      else
-        patch = gem_version.segments[0, 3].join(".")
-        "~> #{patch}\", \">= #{gem_version}"
+    def generate
+      # copy all files from PP's template app, evaluating ERBs and forcing
+      # file overwrites
+      directory(".", app_root, force: true)
+
+      inside(app_root) do
+        remove_file("app/assets/config")
+        remove_file("app/assets/stylesheets/application.css")
+        remove_file("app/views/layouts/application.html.erb")
+
+        # concurrently install all JS dependencies using pnpm
+        run("pnpm i --child-concurrency=#{Etc.nprocessors}", capture: options[:quiet])
+        run("pnpm add webpack-dev-server --save-dev") if options[:with_hmr]
+
+        # get the system-wide Bundler gem and, within the local environment (application),
+        # concurrently install all Ruby gems. we do it in a separate bundler environment
+        # because we don't want cross-talk between pig and app dependencies
+        cmd = "#{Gem.ruby} #{Gem.bin_path("bundler", "bundle")}"
+        Bundler.with_unbundled_env do
+          run("#{cmd} install --jobs=#{Etc.nprocessors}", capture: options[:quiet])
+
+          # install Webpacker's binstubs
+          run("#{cmd} exec rake webpacker:binstubs", capture: options[:quiet])
+          remove_file("bin/webpack-dev-server") if !options[:with_hmr]
+        end
       end
+
+      print_output
     end
 
     def print_output
@@ -109,31 +130,14 @@ module PracticalPig
       end
     end
 
-    def generate
-      # copy all files from PP's template app, evaluating ERBs and forcing
-      # file overwrites
-      directory(".", app_root, force: true)
-
-      inside(app_root) do
-        remove_file("app/assets/config")
-        remove_file("app/assets/stylesheets/application.css")
-        remove_file("app/views/layouts/application.html.erb")
-
-        # concurrently install all JS dependencies using pnpm
-        run("pnpm i --child-concurrency=#{Etc.nprocessors}", capture: options[:quiet])
-
-        # get the system-wide Bundler gem and, within the local environment (application),
-        # concurrently install all Ruby gems
-        cmd = "#{Gem.ruby} #{Gem.bin_path("bundler", "bundle")}"
-        Bundler.with_original_env do
-          run("#{cmd} install --jobs=#{Etc.nprocessors}", capture: options[:quiet])
-
-          # install Webpacker's binstubs
-          run("#{cmd} exec rake webpacker:binstubs", capture: options[:quiet])
-        end
+    # https://github.com/rails/rails/blob/master/railties/lib/rails/generators/app_base.rb#L300-L311
+    def rails_version_specifier(gem_version = Rails.gem_version)
+      if gem_version.segments.size == 3 || gem_version.release.segments.size == 3
+        "~> #{gem_version}"
+      else
+        patch = gem_version.segments[0, 3].join(".")
+        "~> #{patch}\", \">= #{gem_version}"
       end
-
-      print_output
     end
   end
 end
