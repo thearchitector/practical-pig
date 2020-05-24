@@ -9,4 +9,4 @@ if File.exist?(git_path)
 end
 
 require "practical/pig/cli"
-PracticalPig::AppGenerator.start(ARGV)
+PracticalPig::CLI.start(ARGV)

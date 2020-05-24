@@ -9,7 +9,7 @@ require "etc"
 require "bundler"
 
 module PracticalPig
-  class AppGenerator < Thor
+  class CLI < Thor
     include Thor::Actions
 
     NAME_PATTERN = /^[a-z].*[a-z0-9]$/i.freeze
