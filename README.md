@@ -29,7 +29,8 @@ Usage:
   pig new APP_PATH
 
 Options:
-  -q, [--quiet], [--no-quiet]  # Suppress status output
+  -q, [--quiet], [--no-quiet]        # Suppress status output
+      [--with-hmr], [--no-with-hmr]  # Install Webpack HMR development server
 
 Description:
   `pig new` will generate a new Ruby on Rails application and modify it to adhere

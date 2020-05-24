@@ -23,6 +23,7 @@ end
 
 group :development, :test do
   gem "dotenv-rails" # Allows loading ENV values from .env files
+  gem "practical-pig", require: false
   gem "rubocop", "~> 0.83.0", require: false # Enables code analysis and linting
   gem "rubocop-minitest", require: false
   gem "rubocop-performance", require: false
