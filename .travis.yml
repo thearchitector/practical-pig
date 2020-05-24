@@ -3,10 +3,6 @@ dist: bionic
 os:
   - linux
   - osx
-addons:
-  homebrew:
-    packages:
-    - postgresql
 
 cache:
   bundler: true
@@ -22,7 +18,11 @@ rvm:
 gemfile:
   - gemfiles/Gemfile-rails.5.2.x
   - gemfiles/Gemfile-rails.6.0.x
-  - gemfiles/Gemfile-rails-edge
+
+addons:
+  homebrew:
+    packages:
+    - postgresql
 
 before_install:
   - gem install rubygems-update && update_rubygems
@@ -41,12 +41,7 @@ script:
 jobs:
   fast_finish: true
   allow_failures:
-    - gemfile: gemfiles/Gemfile-rails-edge
     - rvm: ruby-head
   exclude:
-    - rvm: 2.4.10
-      gemfile: gemfiles/Gemfile-rails-edge
-    - rvm: 2.5.5
-      gemfile: gemfiles/Gemfile-rails-edge
     - rvm: 2.4.10
       gemfile: gemfiles/Gemfile-rails.6.0.x
