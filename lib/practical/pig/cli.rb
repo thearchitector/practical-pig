@@ -15,7 +15,7 @@ module PracticalPig
     NAME_PATTERN = /^[a-z].*[a-z0-9]$/i.freeze
     private_constant :NAME_PATTERN
 
-    attr_accessor :app_root, :app_name
+    attr_accessor :app_name
 
     desc "new APP_PATH", "Generates a Practical Pig Rails application template."
     long_desc <<~HEREDOC
@@ -53,16 +53,16 @@ module PracticalPig
       # generate a Rails application, omitting many things
       run(
         <<~CMD.squish
-          rails new #{app_path} -GMPCSJB --database=mysql --skip-gemfile --skip-keeps
+          rails new #{app_path} -GMPCSJB --database=postgresql --skip-gemfile --skip-keeps
           #{" --quiet" if options[:quiet]} --skip-action-mailbox --skip-system-test
           --skip-action-text --skip-active-storage --skip-turbolinks
         CMD
       )
 
-      @app_root = File.join(Dir.pwd, app_path)
-      @app_name = File.basename(app_path)
+      app_root = File.join(Dir.pwd, app_path)
+      @app_name = File.basename(app_root)
 
-      generate
+      generate(app_root)
     end
 
     def self.source_root
@@ -75,7 +75,7 @@ module PracticalPig
 
     private
 
-    def generate
+    def generate(app_root)
       # copy all files from PP's template app, evaluating ERBs and forcing
       # file overwrites
       directory(".", app_root, force: true)

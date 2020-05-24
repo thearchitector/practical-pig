@@ -43,5 +43,5 @@ end
 ##
 
 # gem "devise"
-gem "mysql2"
+gem "pg"
 # gem "rack-cors"

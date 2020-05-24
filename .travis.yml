@@ -3,6 +3,10 @@ dist: bionic
 os:
   - linux
   - osx
+addons:
+  homebrew:
+    packages:
+    - postgresql
 
 cache:
   bundler: true
